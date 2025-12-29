@@ -1,3 +1,4 @@
+//** Spoiler - requires SF to use this script **//
 import { instanceCount, getNsDataThroughFile, formatDuration, formatNumberShort, tail } from './helpers.js'
 import { crimeForKillsKarmaStats } from './work-for-factions.js'
 

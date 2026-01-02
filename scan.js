@@ -32,8 +32,6 @@ export function main(ns) {
         .serverscan .backdoor > a {cursor:pointer; text-decoration:underline;}
         .serverscan .cct {color:#0ff;}
         .serverscan .serverStats {color:#8AA;}
-        .scanActions { margin-bottom:6px; }
-        .scanActions a { cursor:pointer; text-decoration:underline; color:#6f3; }
     </style>`;
     const doc = eval("document");
     const terminalInput = doc.getElementById("terminal-input");
@@ -150,10 +148,8 @@ export function main(ns) {
                 routes[oneScanResult] = backdoored ? "connect " + oneScanResult : routes[server] + ";connect " + oneScanResult;
             }
 
-    // Build the output (with an actions bar) and insert it into the terminal
-    const scanHtml = `<div class="serverscan new"><div class="scanActions">[<a id="backdoorAll">backdoor all</a>]</div>${buildOutput()}</div>`;
-    terminalInsert(scanHtml);
-    doc.querySelector("#backdoorAll")?.addEventListener('click', setNavCommand.bind(null, 'home; run /Tasks/backdoor-all-servers.js'));
+    // Build the output and insert it into the terminal
+    terminalInsert(`<div class="serverscan new">${buildOutput()}</div>`);
     doc.querySelectorAll(".serverscan.new .server").forEach(serverEntry => serverEntry
         .addEventListener('click', setNavCommand.bind(null, routes[serverEntry.childNodes[0].nodeValue])));
     doc.querySelectorAll(".serverscan.new .backdoor").forEach(backdoorButton => backdoorButton

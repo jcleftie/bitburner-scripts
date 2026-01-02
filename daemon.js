@@ -84,6 +84,7 @@ export function autocomplete(data, args) {
 // script entry point
 /** @param {NS} ns **/
 export async function main(ns) {
+    try {
     // --- CONSTANTS ---
     // track how costly (in security) a growth/hacking thread is.
     const growthThreadHardening = 0.004;
@@ -301,6 +302,12 @@ export async function main(ns) {
 
         // Process configuration
         options = runOptions;
+        // Open a tail window for debugging unless explicitly disabled
+        try {
+            if (!options['no-tail-windows']) tail(ns);
+        } catch (e) {
+            ns.tprint('Warning: failed to open tail window: ' + getErrorInfo(e));
+        }
         hackOnly = options.h || options['hack-only'];
         xpOnly = options.x || options['xp-only'];
         stockMode = (options.s || options['stock-manipulation'] || options['stock-manipulation-focus']) && !options['disable-stock-manipulation'];
@@ -2361,4 +2368,8 @@ export async function main(ns) {
 
     // Start daemon.js
     await startup_withRetries(ns);
+    } catch (e) {
+        ns.tprint('Uncaught error in daemon.js: ' + getErrorInfo(e));
+        throw e;
+    }
 }
